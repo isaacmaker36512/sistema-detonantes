@@ -1,0 +1,35 @@
+name: Pruebas CI
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+
+    env:
+      JWT_SECRET: clave_secreta_para_pruebas
+      PORT: 3000
+
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar pruebas
+        run: npm run test:coverage
